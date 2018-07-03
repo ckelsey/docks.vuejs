@@ -1,0 +1,14 @@
+.test-item {
+    font-size: 12px;
+    margin: 7px 0px;
+    &.pass {
+        .test-item-result {
+            color: #76b900;
+        }
+    }
+    &.fail {
+        .test-item-result {
+            color: #a10005;
+        }
+    }
+}

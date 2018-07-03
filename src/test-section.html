@@ -1,0 +1,21 @@
+<article v-if="service.states.view === `tests`">
+    <div class="h1 title flex-vcenter">SWG Tests
+        <span class="subtitle">
+            <button @click="testService.runTests()">Run all</button>
+        </span>
+    </div>
+    <div id="test-results">
+        <div class="test-group" v-for="(group, groupName) in testService.testResults.tests" :key="groupName">
+            <div class="h3">{{groupName}}
+                <span v-if="!isNaN(group.pass) && !isNaN(group.total)">{{Math.round((group.pass / group.total) * 100)}}%</span>
+            </div>
+            <div class="test-item" v-for="(testResult, testName) in group.results" :key="testName" :class="testResult.pass ? `pass` : `fail`">
+                <span>
+                    <b>
+                        <span>&middot;</span>{{testName}}</b> ({{testService.getFormatedTime(testResult.time)}}):
+                    <em>{{testResult.pass ? `pass` : testResult.message}}</em>
+                </span>
+            </div>
+        </div>
+    </div>
+</article>

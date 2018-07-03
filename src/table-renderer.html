@@ -1,0 +1,15 @@
+<table v-show="show" class="documentation-table">
+    <thead>
+        <tr>
+            <th v-for="(column, key) in properties.columns" :key="key">{{column.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="(prop, key) in properties.data" :key="key">
+            <td v-for="(column, key) in properties.columns" :key="key" :class="column.label">
+                <json-viewer v-if="prop[column.key] && typeof prop[column.key] !== 'string'" :json="service.formatReturn(prop[column.key])"></json-viewer>
+                <div v-if="prop[column.key] && typeof prop[column.key] === 'string'">{{prop[column.key]}}</div>
+            </td>
+        </tr>
+    </tbody>
+</table>

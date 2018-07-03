@@ -1,0 +1,53 @@
+<article class="doc-element" v-if="service.states.view === `services` && service.doc.name">
+    <div class="h1 title">{{ service.doc.name }}
+        <span class="subtitle" v-if="service.doc.children._description">{{ service.doc.children._description.default }}</span>
+    </div>
+
+    <section v-if="service.doc.data && Object.keys(service.doc.data).length">
+        <div class="h2" @click="service.states.dataProps = !service.states.dataProps" :class="service.states.dataProps ? 'active' : ''">Properties</div>
+        <table-renderer :show="service.states.dataProps" :properties="properties"></table-renderer>
+    </section>
+
+    <section v-if="service.doc.methods && Object.keys(service.doc.methods).length">
+        <div class="h2" @click="service.states.methods = !service.states.methods" :class="service.states.methods ? 'active' : ''">Methods</div>
+        <table-renderer :show="service.states.methods" :properties="methods"></table-renderer>
+        <!-- <table v-show="service.states.methods">
+            <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>arguments</th>
+                <th>returns</th>
+            </tr>
+            <tr v-for="(propinfo, propname) in service.doc.methods" :key="propname">
+                <td>
+                    <span v-if="propinfo.required" class="red">*</span>
+                    <strong>{{ propname }}</strong>
+                </td>
+                <td>{{ propinfo.description }}</td>
+                <td>
+                    <div v-if="propinfo.params && propinfo.params.length">
+                        <div v-for="arg in propinfo.params" :key="arg.name" class="arg-container">
+                            <div class="arg-name" :class="{active: service.states.argToShow === propname + arg.name, noArrow: !arg.properties}" @click="service.states.argToShow = (service.states.argToShow === propname + arg.name ? `none`: propname + arg.name)">
+                                <span>
+                                    <b>{{arg.name}} </b>
+                                    <span v-if="arg.type">
+                                        <i>({{arg.type}})</i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div v-if="arg.properties" v-show="service.states.argToShow === propname + arg.name">
+                                <pre>{{service.json(service.formatProperties(arg.properties))}}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <pre v-if="typeof propinfo.returns === `object`">{{service.formatReturn(propinfo.returns)}}</pre>
+                    <span v-if="typeof propinfo.returns === `string`">{{propinfo.returns}}</span>
+                </td>
+            </tr>
+        </table> -->
+    </section>
+
+    <doc-tests></doc-tests>
+</article>

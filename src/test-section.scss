@@ -1,0 +1,38 @@
+#test-results {
+    .h3 {
+        margin: 7px 0px;
+    }
+    .test-item {
+        font-size: 12px;
+        padding-left: 7px;
+        display: flex;
+        align-items: center;
+    }
+    .test-item em {
+        margin-left: 7px;
+    }
+    .test-item b {
+        margin-right: 7px;
+    }
+    .test-item b,
+    .test-item span {
+        display: flex;
+        align-items: center;
+    }
+    .test-item b span {
+        font-size: 35px;
+        margin-right: 7px;
+        line-height: 21px;
+    }
+    .test-item.pass em,
+    .test-item.pass b span {
+        color: #76b900;
+    }
+    .test-item.fail em,
+    .test-item.fail b span {
+        color: #a10005;
+    }
+    .test-group {
+        margin: 7px 0px;
+    }
+}

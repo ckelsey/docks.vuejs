@@ -1,0 +1,148 @@
+<div id="documentation-overlay">
+    <!-- <div id="docs-close-button" @click="App.showDocs = false">x</div> -->
+    <div class="doc-sidebar">
+        <doc-sidebar></doc-sidebar>
+    </div>
+    
+    <div class="doc-viewer" :class="service.openedDoc">
+        <div class="doc-container">
+            <test-section></test-section>
+            <service-renderer></service-renderer>
+
+            
+            <!--
+            
+
+            <article class="doc-element" v-if="service.states.view === `components` && doc.name">
+                <div class="h1 title">{{ doc.children.name.default }}
+                    <span class="subtitle" v-if="doc.children._description">{{ doc.children._description.default }}</span>
+                </div>
+                <section>
+                    <div class="h2" @click="service.states.demo = !service.states.demo" :class="service.states.demo ? 'active' : ''">Demo</div>
+                    <div v-show="service.states.demo">
+                        <div>
+                            <pre class="demo"><code>{{getMarkup(doc)}}</code></pre>
+                        </div>
+                        <div>
+                            <button @click="launch(doc)">Launch demo</button>
+                            <button @click="runTest(doc)">Test</button>
+                        </div>
+                        <div id="demo-overlay-container" v-show="service.states.demoOverlay">
+                            <div id="demo-overlay-close" @click="service.states.demoOverlay = false">x</div>
+                            <div id="demo-overlay"></div>
+                        </div>
+                    </div>
+                </section>
+                <section v-if="doc.data && Object.keys(doc.data).length">
+                    <div class="h2" @click="service.states.dataProps = !service.states.dataProps" :class="service.states.dataProps ? 'active' : ''">Data properties</div>
+                    <table v-show="service.states.dataProps">
+                        <tr>
+                            <th>name</th>
+                            <th>type</th>
+                            <th>description</th>
+                        </tr>
+                        <tr v-for="(propinfo, propname) in doc.data" :key="propname">
+                            <td>
+                                <span v-if="propinfo.required" class="red">*</span>
+                                <strong>{{ propname }}</strong>
+                            </td>
+                            <td class="type">{{ propinfo.type }}</td>
+                            <td>{{ propinfo.description }}</td>
+                        </tr>
+                    </table>
+                </section>
+                <section v-if="doc.props && Object.keys(doc.props).length">
+                    <div class="h2" @click="service.states.props = !service.states.props" :class="service.states.props ? 'active' : ''">Attribute properties</div>
+                    <table v-show="service.states.props">
+                        <tr>
+                            <th>name</th>
+                            <th>type</th>
+                            <th>description</th>
+                            <th>value</th>
+                        </tr>
+                        <tr v-for="(propinfo, propname) in doc.props" :key="propname">
+                            <td>
+                                <span v-if="propinfo.required" class="red">*</span>
+                                <strong>{{ propname }}</strong>
+                            </td>
+                            <td class="type">{{ propinfo.type }}</td>
+                            <td>{{ propinfo.description }}</td>
+                            <td>
+                                <div v-if="propinfo.type.toLowerCase() === 'function'">
+                                    <textarea v-model="propinfo.value" @keyup="getVal(doc)"></textarea>
+                                </div>
+                                <div v-if="propinfo.type.toLowerCase() === 'string'">
+                                    <input type="text" v-model="propinfo.value" @keyup="getVal(doc)">
+                                </div>
+                                <div v-if="propinfo.type.toLowerCase() === 'string | array'">
+                                    <textarea v-model="propinfo.value" @keyup="getVal(doc)"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+                <section v-if="doc.computed && Object.keys(doc.computed).length">
+                    <div class="h2" @click="service.states.computed = !service.states.computed" :class="service.states.computed ? 'active' : ''">Computed properties</div>
+                    <table v-show="service.states.computed">
+                        <tr>
+                            <th>name</th>
+                            <th>description</th>
+                            <th>returns</th>
+                        </tr>
+                        <tr v-for="(propinfo, propname) in doc.computed" :key="propname">
+                            <td>
+                                <span v-if="propinfo.required" class="red">*</span>
+                                <strong>{{ propname }}</strong>
+                            </td>
+                            <td>{{ propinfo.description }}</td>
+                            <td>
+                                <pre v-if="typeof propinfo.returns === `object`">{{formatReturn(propinfo.returns)}}</pre>
+                                <span v-if="typeof propinfo.returns === `string`">{{propinfo.returns}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+                <section v-if="doc.methods && Object.keys(doc.methods).length">
+                    <div class="h2" @click="service.states.methods = !service.states.methods" :class="service.states.methods ? 'active' : ''">Methods</div>
+                    <table v-show="service.states.methods">
+                        <tr>
+                            <th>name</th>
+                            <th>description</th>
+                            <th>arguments</th>
+                            <th>returns</th>
+                        </tr>
+                        <tr v-for="(propinfo, propname) in doc.methods" :key="propname">
+                            <td>
+                                <span v-if="propinfo.required" class="red">*</span>
+                                <strong>{{ propname }}</strong>
+                            </td>
+                            <td>{{ propinfo.description }}</td>
+                            <td>
+                                <div v-if="propinfo.params && propinfo.params.length">
+                                    <div v-for="arg in propinfo.params" :key="arg.name" class="arg-container">
+                                        <div class="arg-name" :class="{active: service.states.argToShow === propname + arg.name, noArrow: !arg.properties}" @click="service.states.argToShow = (service.states.argToShow === propname + arg.name ? `none`: propname + arg.name)">
+                                            <span>
+                                                <b>{{arg.name}} </b>
+                                                <span v-if="arg.type">
+                                                    <i>({{arg.type}})</i>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div v-if="arg.properties" v-show="service.states.argToShow === propname + arg.name">
+                                            <pre>{{json(formatProperties(arg.properties))}}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <pre v-if="typeof propinfo.returns === `object`">{{formatReturn(propinfo.returns)}}</pre>
+                                <span v-if="typeof propinfo.returns === `string`">{{propinfo.returns}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+            </article>
+        </div>
+    </div>
+-->
+</div>
