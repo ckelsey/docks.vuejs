@@ -12,6 +12,9 @@ module.exports = {
     output: {
         filename: 'docks.min.js',
         path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'umd',
+        library: 'docks',
+        umdNamedDefine: true
         // libraryTarget: 'window',
         // library: 'Docks'
     },
