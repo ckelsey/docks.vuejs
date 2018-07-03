@@ -12,8 +12,8 @@ module.exports = {
     output: {
         filename: 'docks.min.js',
         path: path.resolve(__dirname, 'dist'),
-        libraryTarget: 'window',
-        library: 'Docks'
+        // libraryTarget: 'window',
+        // library: 'Docks'
     },
     resolve: {
         alias: {
