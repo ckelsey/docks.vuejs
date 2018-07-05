@@ -80,6 +80,8 @@ class TestService {
                 Vue.set(this.testResults.tests[groupKey].results, test.name, res)
                 this.testResults.testsAreRunning = false
 
+                console.log(res)
+
                 if (res.pass) {
                     this.testResults.tests[groupKey].pass = this.testResults.tests[groupKey].pass + 1
                     return resolve(res)
@@ -97,6 +99,7 @@ class TestService {
 
             test.fn()
                 .then((res: any) => {
+                    console.log(res)
                     setResults({
                         pass: true,
                         message: ``,
