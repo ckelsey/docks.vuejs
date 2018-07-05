@@ -1,9 +1,15 @@
-<div class="test-item" :class="{pass: testService.hasTestPassed(service.doc, test.name), fail: testService.hasTestPassed(service.doc, test.name) === false}">
-    <button @click="testService.runTest(test, service.docName(service.doc))" class="spin-if-running" :class="{running: testService.isTestRunning(service.doc, test.name), disabled: testService.testResults.testsAreRunning}">
-        <span>
-            <span>&#9658;</span>
-        </span>
-    </button>
-    <b>{{test.name}}</b>
-    <span class="test-item-result" v-if="testService.hasTestRan(service.doc, test.name)">{{testService.hasTestPassed(service.doc, test.name) ? ': pass' : testService.hasTestPassed(service.doc, test.name) === false ? ': fail' : ':'}}</span>
-</div>
+<div>
+    <div class="test-item" :class="{pass: testService.hasTestPassed(service.doc, test.name), fail: testService.hasTestPassed(service.doc, test.name) === false}">
+        <button @click="testService.runTest(test, service.docName(service.doc))" class="spin-if-running" :class="{running: testService.isTestRunning(service.doc, test.name), disabled: testService.testResults.testsAreRunning}">
+            <span>
+                <span>&#9658;</span>
+            </span>
+        </button>
+        <b>{{test.name}}</b>
+        <span class="test-item-result" v-if="testService.hasTestRan(service.doc, test.name)">{{testService.hasTestPassed(service.doc, test.name) ? ': pass' : testService.hasTestPassed(service.doc, test.name)
+            === false ? ': fail' : ':'}}</span>
+    </div>
+    <div class="test-asserts">
+        <div class="test-assert" v-for="assert in testService.hasTestAsserts(service.doc, test.name)"><span><b>{{assert.pass}}: </b><span>{{assert.key}}</span><span>({{assert.message}})</span></span></div>
+    </div>
+</div>>

@@ -35,6 +35,15 @@ class TestService {
         return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}.pass`)
     }
 
+    hasTestAsserts(doc: any, testName: string) {
+
+        if (!doc) {
+            return undefined
+        }
+
+        return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}.results`)
+    }
+
     isTestRunning(doc: any, testName: string) {
 
         if (!doc) {
@@ -92,14 +101,16 @@ class TestService {
                         pass: true,
                         message: ``,
                         time: new Date().getTime() - now,
-                        running: false
+                        running: false,
+                        results: res
                     })
                 }, (rej: any) => {
                     setResults({
                         pass: false,
                         message: rej,
                         time: new Date().getTime() - now,
-                        running: false
+                        running: false,
+                        results: rej
                     })
                 })
         })
