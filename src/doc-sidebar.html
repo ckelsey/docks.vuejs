@@ -1,17 +1,17 @@
 <div>
-    <div>
+    <div v-if="service.DocsData.components">
         <div class="sidebar-heading group" :class="service.states.components? `active` : `` " @click="service.states.components = !service.states.components">Components</div>
         <div :class="service.states.components? `shown` : `` " class="link-group">
             <div class="doc-sidebar-link" v-for="(docLink, docLinkName) in service.DocsData.components" :key="docLinkName" @click="service.openDoc('components.' + docLinkName)">{{docLink.children.name.default}}</div>
         </div>
     </div>
-    <div>
+    <div v-if="service.DocsData.services">
         <div class="sidebar-heading group" :class="service.states.services? `active` : `` " @click="service.states.services = !service.states.services">Services</div>
         <div :class="service.states.services? `shown` : `` " class="link-group">
             <div class="doc-sidebar-link" v-for="(docLink, docLinkName) in service.DocsData.services" :key="docLinkName" @click="service.openService('services.' + docLinkName)">{{docLinkName}}</div>
         </div>
     </div>
-    <div>
+    <div v-if="testService.tests">
         <div class="sidebar-heading" @click="service.states.view = `tests`">Tests</div>
     </div>
 </div>

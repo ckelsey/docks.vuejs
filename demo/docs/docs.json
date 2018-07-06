@@ -1,0 +1,711 @@
+{
+	"id": 0,
+	"name": "docks.vuejs",
+	"kind": 0,
+	"flags": {},
+	"children": [
+		{
+			"id": 28,
+			"name": "\"*.html\"",
+			"kind": 2,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 29,
+					"name": "content",
+					"kind": 32,
+					"kindString": "Variable",
+					"flags": {
+						"isExported": true,
+						"isConst": true
+					},
+					"sources": [
+						{
+							"fileName": "html.d.ts",
+							"line": 7,
+							"character": 17
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Variables",
+					"kind": 32,
+					"children": [
+						29
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "html.d.ts",
+					"line": 6,
+					"character": 23
+				}
+			]
+		},
+		{
+			"id": 27,
+			"name": "\"*.vue\"",
+			"kind": 2,
+			"kindString": "Module",
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "html.d.ts",
+					"line": 1,
+					"character": 22
+				}
+			]
+		},
+		{
+			"id": 20,
+			"name": "Demo",
+			"kind": 128,
+			"kindString": "Class",
+			"flags": {
+				"isExported": true
+			},
+			"decorators": [
+				{
+					"name": "Component",
+					"type": {
+						"type": "reference",
+						"name": "Component"
+					},
+					"arguments": {
+						"options": "{\n    template: `<documentation :docs=\"DocksData\" :tests=\"tests\"></documentation>`,\n    components:{\n        'documentation': Docks\n    }\n}"
+					}
+				}
+			],
+			"children": [
+				{
+					"id": 22,
+					"name": "DocksData",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {
+						"isExported": true
+					},
+					"sources": [
+						{
+							"fileName": "app.ts",
+							"line": 17,
+							"character": 13
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"defaultValue": " DocsData"
+				},
+				{
+					"id": 21,
+					"name": "name",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {
+						"isExported": true
+					},
+					"sources": [
+						{
+							"fileName": "app.ts",
+							"line": 16,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"defaultValue": "\"App\""
+				},
+				{
+					"id": 23,
+					"name": "tests",
+					"kind": 2097152,
+					"kindString": "Object literal",
+					"flags": {
+						"isExported": true
+					},
+					"children": [
+						{
+							"id": 24,
+							"name": "Demo",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "app.ts",
+									"line": 19,
+									"character": 12
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "Tests",
+								"id": 17
+							},
+							"defaultValue": " demoTests"
+						}
+					],
+					"groups": [
+						{
+							"title": "Variables",
+							"kind": 32,
+							"children": [
+								24
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "app.ts",
+							"line": 18,
+							"character": 9
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "object"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"kind": 1024,
+					"children": [
+						22,
+						21
+					]
+				},
+				{
+					"title": "Object literals",
+					"kind": 2097152,
+					"children": [
+						23
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "app.ts",
+					"line": 14,
+					"character": 25
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "intersection",
+					"types": [
+						{
+							"type": "intrinsic",
+							"name": "object"
+						},
+						{
+							"type": "reflection",
+							"declaration": {
+								"id": 25,
+								"name": "__type",
+								"kind": 65536,
+								"kindString": "Type literal",
+								"flags": {}
+							}
+						},
+						{
+							"type": "reference",
+							"name": "Vue",
+							"typeArguments": [
+								{
+									"type": "unknown",
+									"name": "this"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "TestCase",
+			"kind": 128,
+			"kindString": "Class",
+			"flags": {},
+			"children": [
+				{
+					"id": 5,
+					"name": "asserts",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 6,
+							"character": 11
+						}
+					],
+					"type": {
+						"type": "reference",
+						"name": "Array",
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						]
+					},
+					"defaultValue": " [\n        {\n            name: `should add ${this.val1} plus ${this.val2} to equal 3`,\n            fn: () => this.methods.add() === 3\n        },\n        \"should subtract 2 from 1 to equal 1\",\n        \"should fail\"\n    ]"
+				},
+				{
+					"id": 2,
+					"name": "name",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 2,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"defaultValue": " `sample test case`"
+				},
+				{
+					"id": 3,
+					"name": "val1",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 3,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "1"
+				},
+				{
+					"id": 4,
+					"name": "val2",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 4,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "2"
+				},
+				{
+					"id": 6,
+					"name": "methods",
+					"kind": 2097152,
+					"kindString": "Object literal",
+					"flags": {},
+					"children": [
+						{
+							"id": 7,
+							"name": "add",
+							"kind": 64,
+							"kindString": "Function",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 8,
+									"name": "add",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "number"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "test.ts",
+									"line": 16,
+									"character": 11
+								}
+							]
+						},
+						{
+							"id": 11,
+							"name": "should fail",
+							"kind": 64,
+							"kindString": "Function",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 12,
+									"name": "should fail",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "test.ts",
+									"line": 18,
+									"character": 21
+								}
+							]
+						},
+						{
+							"id": 9,
+							"name": "should subtract 2 from 1 to equal 1",
+							"kind": 64,
+							"kindString": "Function",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 10,
+									"name": "should subtract 2 from 1 to equal 1",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "test.ts",
+									"line": 17,
+									"character": 45
+								}
+							]
+						}
+					],
+					"groups": [
+						{
+							"title": "Functions",
+							"kind": 64,
+							"children": [
+								7,
+								11,
+								9
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 15,
+							"character": 11
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "object"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"kind": 1024,
+					"children": [
+						5,
+						2,
+						3,
+						4
+					]
+				},
+				{
+					"title": "Object literals",
+					"kind": 2097152,
+					"children": [
+						6
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "test.ts",
+					"line": 1,
+					"character": 14
+				}
+			]
+		},
+		{
+			"id": 13,
+			"name": "TestCase2",
+			"kind": 128,
+			"kindString": "Class",
+			"flags": {},
+			"children": [
+				{
+					"id": 16,
+					"name": "asserts",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 26,
+							"character": 11
+						}
+					],
+					"type": {
+						"type": "reference",
+						"name": "Array",
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						]
+					},
+					"defaultValue": " [\n        {\n            name: `1 equals ${this.val}`,\n            fn: () => {\n                return 1 === this.val\n            }\n        }\n    ]"
+				},
+				{
+					"id": 14,
+					"name": "name",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 23,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"defaultValue": " `Tests 2`"
+				},
+				{
+					"id": 15,
+					"name": "val",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 24,
+							"character": 7
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "1"
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"kind": 1024,
+					"children": [
+						16,
+						14,
+						15
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "test.ts",
+					"line": 22,
+					"character": 15
+				}
+			]
+		},
+		{
+			"id": 17,
+			"name": "Tests",
+			"kind": 128,
+			"kindString": "Class",
+			"flags": {
+				"isExported": true
+			},
+			"children": [
+				{
+					"id": 18,
+					"name": "name",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {
+						"isExported": true
+					},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 37,
+							"character": 8
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					},
+					"defaultValue": "\"Demo\""
+				},
+				{
+					"id": 19,
+					"name": "tests",
+					"kind": 1024,
+					"kindString": "Property",
+					"flags": {
+						"isExported": true
+					},
+					"sources": [
+						{
+							"fileName": "test.ts",
+							"line": 39,
+							"character": 9
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"name": "TestCase",
+									"id": 1
+								},
+								{
+									"type": "reference",
+									"name": "TestCase2",
+									"id": 13
+								}
+							]
+						}
+					},
+					"defaultValue": " [\n        new TestCase(),\n        new TestCase2()\n    ]"
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"kind": 1024,
+					"children": [
+						18,
+						19
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "test.ts",
+					"line": 36,
+					"character": 11
+				}
+			]
+		},
+		{
+			"id": 26,
+			"name": "DocsData",
+			"kind": 32,
+			"kindString": "Variable",
+			"flags": {
+				"isConst": true
+			},
+			"sources": [
+				{
+					"fileName": "app.ts",
+					"line": 5,
+					"character": 14
+				}
+			],
+			"type": {
+				"type": "intrinsic",
+				"name": "any"
+			},
+			"defaultValue": " require('./docs/docsData.json')"
+		},
+		{
+			"id": 30,
+			"name": "require",
+			"kind": 32,
+			"kindString": "Variable",
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "require.d.ts",
+					"line": 1,
+					"character": 19
+				}
+			],
+			"type": {
+				"type": "intrinsic",
+				"name": "any"
+			}
+		}
+	],
+	"groups": [
+		{
+			"title": "Modules",
+			"kind": 2,
+			"children": [
+				28,
+				27
+			]
+		},
+		{
+			"title": "Classes",
+			"kind": 128,
+			"children": [
+				20,
+				1,
+				13,
+				17
+			]
+		},
+		{
+			"title": "Variables",
+			"kind": 32,
+			"children": [
+				26,
+				30
+			]
+		}
+	]
+}

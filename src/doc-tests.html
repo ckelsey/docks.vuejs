@@ -5,7 +5,7 @@
             <button @click="testService.runTestGroup(tests)" :class="{disabled:testService.testResults.testsAreRunning}">&#9658; Run all</button>
         </div>
         <div v-for="(test, testKey) in tests.tests" :key="testKey">
-            <test-item :testKey="testKey"></test-item>
+            <test-item :testKey="testKey" :testGroup="groupName"></test-item>
         </div>
     </div>
 </section>

@@ -1,15 +1,16 @@
 import Vue from "vue"
 import Component from "vue-class-component"
-import { Prop } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator"
 import documentationService from "./documentation-service"
 import template from './test-item.html'
 import './test-item.scss'
-import testService from "./test-service";
+import testService from "./test-service"
 
 @Component({
     template,
     propsData: {
-        testKey: ``
+        testKey: ``,
+        testGroup: ``
     }
 })
 
@@ -22,7 +23,11 @@ export default class TestItem extends Vue {
     @Prop()
     testKey: string = this.testKey
 
+    @Prop()
+    testGroup: string = this.testGroup
+
     get test(){
-        return this.testService.getTests(this.service.doc).tests[this.testKey] || {}
+        let test = this.service.getThis(this.testService.tests, `${this.testGroup}.tests.${this.testKey}`, {})
+        return test
     }
 }

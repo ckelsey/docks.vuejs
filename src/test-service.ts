@@ -17,49 +17,108 @@ class TestService {
         this.tests = tests
     }
 
-    hasTestRan(doc: any, testName: string) {
+    hasTestRan(doc: string, testName: string) {
 
         if (!doc) {
             return false
         }
 
-        return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}`)
+        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}`)
     }
 
-    hasTestPassed(doc: any, testName: string) {
+    hasTestPassed(doc: string, testName: string) {
 
         if (!doc) {
             return undefined
         }
 
-        return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}.pass`)
+        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.pass`)
     }
 
-    hasTestAsserts(doc: any, testName: string) {
+    hasTestAsserts(doc: string, testName: string) {
 
         if (!doc) {
             return undefined
         }
 
-        return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}.results`)
+        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.results`)
     }
 
-    isTestRunning(doc: any, testName: string) {
+    isTestRunning(doc: string, testName: string) {
 
         if (!doc) {
             return undefined
         }
 
-        return DocumentationService.getThis(this.testResults.tests, `${DocumentationService.docName(doc)}.results.${testName}.running`)
+        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.running`)
     }
 
-    getTests(doc: any) {
+    getTests(doc: string) {
 
         if (!doc) {
             return false
         }
 
-        return this.tests[DocumentationService.docName(doc)] || undefined
+        return this.tests[doc] || undefined
+    }
+
+    runAsserts(test: any) {
+        return new Promise((resolve, reject)=>{
+            test.results = []
+
+            const runAssert = (index: number) => {
+                if (!test.asserts[index]) {
+                    return resolve(test.results)
+                }
+
+                let key: any = test.asserts[index]
+                let fn: Function = () => { }
+                let pre: Function | null = null
+                let val: any
+
+                if (typeof key === `string`) {
+                    fn = test.methods[key]
+                } else if (typeof test.asserts[index] === `object`) {
+                    key = test.asserts[index].name
+                    fn = test.asserts[index].fn
+                    pre = test.asserts[index].pre || pre
+                }
+
+                const setResult = () => {
+                    if (val instanceof Promise) {
+                        val
+                            .then(res => {
+                                test.results.push({ pass: true, message: res.toString(), key })
+                                runAssert(index + 1)
+                            })
+                            .catch(res => {
+                                test.results.push({ pass: false, message: res.toString(), key })
+                                runAssert(index + 1)
+                            })
+                    } else {
+                        test.results.push({ pass: val, message: val.toString(), key })
+                        runAssert(index + 1)
+                    }
+                }
+
+                if (!pre) {
+                    val = fn()
+                    setResult()
+                } else {
+                    pre()
+                        .then(() => {
+                            val = fn()
+                            setResult()
+                        })
+                        .catch(() => {
+                            val = fn()
+                            setResult()
+                        })
+                }
+            }
+
+            runAssert(0)
+        })
     }
 
     runTest(test: any, groupKey: string) {
@@ -80,8 +139,6 @@ class TestService {
                 Vue.set(this.testResults.tests[groupKey].results, test.name, res)
                 this.testResults.testsAreRunning = false
 
-                console.log(res)
-
                 if (res.pass) {
                     this.testResults.tests[groupKey].pass = this.testResults.tests[groupKey].pass + 1
                     return resolve(res)
@@ -97,25 +154,45 @@ class TestService {
                 running: true
             })
 
-            test.fn()
-                .then((res: any) => {
-                    console.log(res)
-                    setResults({
-                        pass: true,
-                        message: ``,
-                        time: new Date().getTime() - now,
-                        running: false,
-                        results: res
+            if (test.asserts && test.asserts.length) {
+                this.runAsserts(test)
+                    .then((res: any) => {
+                        setResults({
+                            pass: true,
+                            message: ``,
+                            time: new Date().getTime() - now,
+                            running: false,
+                            results: res
+                        })
+                    }, (rej: any) => {
+                        setResults({
+                            pass: false,
+                            message: rej,
+                            time: new Date().getTime() - now,
+                            running: false,
+                            results: rej
+                        })
                     })
-                }, (rej: any) => {
-                    setResults({
-                        pass: false,
-                        message: rej,
-                        time: new Date().getTime() - now,
-                        running: false,
-                        results: rej
+            } else if (test.fn && typeof test.fn === `function`) {
+                test.fn()
+                    .then((res: any) => {
+                        setResults({
+                            pass: true,
+                            message: ``,
+                            time: new Date().getTime() - now,
+                            running: false,
+                            results: res
+                        })
+                    }, (rej: any) => {
+                        setResults({
+                            pass: false,
+                            message: rej,
+                            time: new Date().getTime() - now,
+                            running: false,
+                            results: rej
+                        })
                     })
-                })
+            }
         })
 
     }
