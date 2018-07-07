@@ -2,8 +2,8 @@ import Vue from "vue"
 import Component from "vue-class-component"
 
 import service from './documentation-service'
+import testService from './test-service'
 
-import DocTests from './doc-tests'
 import TableRenderer from "./table-renderer";
 
 import template from './service-renderer.html'
@@ -12,7 +12,6 @@ import './service-renderer.scss'
 @Component({
     template,
     components: {
-        'doc-tests': DocTests,
         'table-renderer': TableRenderer
     }
 })
@@ -21,6 +20,7 @@ export default class ServiceRenderer extends Vue {
 
     name: string = 'service-renderer'
     service = service
+    testService = testService
 
     get properties() {
         return {

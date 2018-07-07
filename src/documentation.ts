@@ -8,6 +8,7 @@ import TestSection from './test-section'
 import TestItem from './test-item'
 import DocSidebar from './doc-sidebar'
 import ServiceRenderer from './service-renderer'
+import ComponentRenderer from './component-renderer'
 
 import template from './documentation.html'
 import './documentation.scss'
@@ -17,13 +18,15 @@ import testService from "./test-service";
     template,
     propsData:{
         docs: {},
-        tests: {}
+        tests: {},
+        componentClasses: {}
     },
     components: {
         'test-item': TestItem,
         'doc-sidebar': DocSidebar,
         'test-section': TestSection,
-        'service-renderer': ServiceRenderer
+        'service-renderer': ServiceRenderer,
+        'component-renderer': ComponentRenderer
     }
 })
 
@@ -39,6 +42,9 @@ export default class Documentation extends Vue {
     @Prop()
     tests: any = this.tests
 
+    @Prop()
+    componentClasses: any = this.componentClasses
+
     launch(doc: any) {
         let propsData: { [key: string]: any } = {}
         let container = document.getElementById(`demo-overlay`)
@@ -46,8 +52,8 @@ export default class Documentation extends Vue {
         if (container) {
             container.innerHTML = ``
 
-            if(this.components){
-            	let _Class = this.components[doc.meta.name.default]
+            if (this.componentClasses){
+                let _Class = this.componentClasses[doc.meta.name.default]
 
 				if (_Class) {
 					DocumentationService.states.demoOverlay = true
@@ -64,7 +70,9 @@ export default class Documentation extends Vue {
 									break
 							}
 						}
-					}
+                    }
+                    
+                    console.log(propsData)
 
 					let Class = Vue.extend(_Class)
 					let Instance = new Class({ propsData })

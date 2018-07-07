@@ -12,6 +12,4 @@
         <div class="h2" @click="service.states.methods = !service.states.methods" :class="service.states.methods ? 'active' : ''">Methods</div>
         <table-renderer :show="service.states.methods" :properties="methods"></table-renderer>
     </section>
-
-    <doc-tests :testGroup="service.docName(service.doc)"></doc-tests>
 </article>

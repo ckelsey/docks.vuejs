@@ -12,7 +12,7 @@ import './json-viewer.scss'
     }
 })
 
-export default class TableRenderer extends Vue {
+export default class JSONViewer extends Vue {
 
     name: string = 'json-viewer'
 

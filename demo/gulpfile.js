@@ -125,7 +125,7 @@ gulp.task("createDocs", function (done) {
     // fs.openSync(outPath, 'w')
 
     const exec = require('child_process').exec
-    exec(`typedoc --json ./docs/docs.json ./ --tsconfig ./tsconfig.json --excludeExternals --includeDeclarations --exclude node_modules --ignoreCompilerErrors --target ES5 --mode file`, function () {
+    exec(`typedoc --json ./docs/docs.json ../src/ --tsconfig ./tsconfig.json --excludeExternals --includeDeclarations --exclude node_modules --ignoreCompilerErrors --target ES5 --mode file`, function () {
 
         const Docs = require(srcPath)
 

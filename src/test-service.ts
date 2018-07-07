@@ -35,13 +35,34 @@ class TestService {
         return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.pass`)
     }
 
-    hasTestAsserts(doc: string, testName: string) {
+    getTestAssertResult(doc: string, testName: string, index: number) {
+        if (!doc) {
+            return undefined
+        }
+
+        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.results.${index}`)
+    }
+
+    hasTestAsserts(doc: string, testIndex: number) {
 
         if (!doc) {
             return undefined
         }
 
-        return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.results`)
+        let asserts: Array<any> = DocumentationService.getThis(this.tests, `${doc}.tests.${testIndex}.asserts`)
+        let assertKeys: Array<string> = []
+
+        if (asserts) {
+            asserts.forEach(element => {
+                if (element.name) {
+                    assertKeys.push(element.name)
+                } else {
+                    assertKeys.push(element)
+                }
+            })
+        }
+
+        return assertKeys
     }
 
     isTestRunning(doc: string, testName: string) {
@@ -63,7 +84,7 @@ class TestService {
     }
 
     runAsserts(test: any) {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             test.results = []
 
             const runAssert = (index: number) => {
@@ -147,6 +168,24 @@ class TestService {
                 return reject(res)
             }
 
+            let finishAssert = (res: any) => {
+                let passed = true
+
+                res.forEach((element: any) => {
+                    if (!element.pass) {
+                        passed = false
+                    }
+                })
+
+                setResults({
+                    pass: passed,
+                    message: ``,
+                    time: new Date().getTime() - now,
+                    running: false,
+                    results: res
+                })
+            }
+
             Vue.set(this.testResults.tests[groupKey].results, test.name, {
                 pass: undefined,
                 message: ``,
@@ -155,24 +194,9 @@ class TestService {
             })
 
             if (test.asserts && test.asserts.length) {
-                this.runAsserts(test)
-                    .then((res: any) => {
-                        setResults({
-                            pass: true,
-                            message: ``,
-                            time: new Date().getTime() - now,
-                            running: false,
-                            results: res
-                        })
-                    }, (rej: any) => {
-                        setResults({
-                            pass: false,
-                            message: rej,
-                            time: new Date().getTime() - now,
-                            running: false,
-                            results: rej
-                        })
-                    })
+                
+                this.runAsserts(test).then(finishAssert, finishAssert)
+
             } else if (test.fn && typeof test.fn === `function`) {
                 test.fn()
                     .then((res: any) => {

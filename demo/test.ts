@@ -1,5 +1,5 @@
 class TestCase {
-    name = `sample test case`
+    name = `TestCase`
     val1 = 1
     val2 = 2
 
@@ -15,12 +15,18 @@ class TestCase {
     methods: { [key: string]: Function } = {
         add: () => this.val1 + this.val2,
         "should subtract 2 from 1 to equal 1": () => 2 - 1 === 1,
-        "should fail": () => false
+        "should fail": () => {
+            return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    return reject(`oops`)
+                }, 1000)
+            })
+        }
     }
 }
 
 class TestCase2 {
-    name = `Tests 2`
+    name = `TestCase2`
     val = 1
 
     asserts: Array<any> = [
