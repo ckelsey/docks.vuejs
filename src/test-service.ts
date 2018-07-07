@@ -109,7 +109,7 @@ class TestService {
                     if (val instanceof Promise) {
                         val
                             .then(res => {
-                                test.results.push({ pass: true, message: res.toString(), key })
+                                test.results.push({ pass: !!res, message: res.toString(), key })
                                 runAssert(index + 1)
                             })
                             .catch(res => {
