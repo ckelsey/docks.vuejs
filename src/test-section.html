@@ -6,10 +6,13 @@
     </div>
     <div id="test-results">
         <div class="test-group" v-for="(group, groupName) in testService.tests" :key="groupName">
-            <div class="h3">{{groupName}}
-                <span v-if="!isNaN(testService.testResults[groupName]) && !isNaN(testService.testResults[groupName].total)">{{Math.round((testService.testResults[groupName].pass / testService.testResults[groupName].total) * 100)}}%</span>
+            <div class="test-group-header">
+                <button class="spin-if-running" @click="testService.runTestGroup(group); testService.shownTestsState = groupName" :class="{running: testService.isTestRunning(groupName), disabled: testService.testResults.testsAreRunning}"><span>&#9658;</span></button>
+                <div class="h3" @click="showHideTest(groupName)" :class="{open :testService.shownTestsState === groupName, groupPass: testsPassed(groupName), groupFailed: testsPassed(groupName) === false}">{{groupName}}</div>
             </div>
-            <test-item v-for="(test, testKey) in group.tests" :key="testKey" :testKey="testKey" :testGroup="groupName"></test-item>
+            <div v-show="testService.shownTestsState === groupName" class="test-items">
+                <test-item v-for="(test, testKey) in group.tests" :key="testKey" :testKey="testKey" :testGroup="groupName"></test-item>
+            </div>
         </div>
     </div>
 </article>

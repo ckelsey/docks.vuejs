@@ -61,7 +61,13 @@
     }
     .test-asserts {
         font-size: 12px;
-        padding-left: 47px;
+        .test-assert {
+            padding: 7px 7px 7px 47px;
+            background: rgba(35, 71, 100, 0.04);
+            &:nth-child(even) {
+                background: rgba(35, 71, 100, 0.09);
+            }
+        }
     }
 }
 

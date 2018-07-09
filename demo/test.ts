@@ -16,8 +16,8 @@ class TestCase {
         add: () => this.val1 + this.val2,
         "should subtract 2 from 1 to equal 1": () => 2 - 1 === 1,
         "should fail": () => {
-            return new Promise((resolve, reject)=>{
-                setTimeout(()=>{
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
                     return reject(`oops`)
                 }, 1000)
             })

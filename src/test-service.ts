@@ -12,6 +12,7 @@ class TestService {
     }
 
     tests: any = {}
+    shownTestsState: string = ``
 
     setTests(tests: any) {
         this.tests = tests
@@ -65,10 +66,14 @@ class TestService {
         return assertKeys
     }
 
-    isTestRunning(doc: string, testName: string) {
+    isTestRunning(doc: string, testName?: string) {
 
         if (!doc) {
             return undefined
+        }
+
+        if (!testName){
+            return DocumentationService.getThis(this.testResults.tests, `${doc}.running`)
         }
 
         return DocumentationService.getThis(this.testResults.tests, `${doc}.results.${testName}.running`)
@@ -109,15 +114,15 @@ class TestService {
                     if (val instanceof Promise) {
                         val
                             .then(res => {
-                                test.results.push({ pass: !!res, message: res.toString(), key })
+                                test.results.push({ pass: true, message: res, key })
                                 runAssert(index + 1)
                             })
                             .catch(res => {
-                                test.results.push({ pass: false, message: res.toString(), key })
+                                test.results.push({ pass: false, message: res, key })
                                 runAssert(index + 1)
                             })
                     } else {
-                        test.results.push({ pass: val, message: val.toString(), key })
+                        test.results.push({ pass: !!val, message: val, key })
                         runAssert(index + 1)
                     }
                 }
@@ -150,18 +155,20 @@ class TestService {
 
             if (!this.testResults.tests[groupKey]) {
                 Vue.set(this.testResults.tests, groupKey, {
-                    total: this.tests[groupKey] ? this.tests[groupKey].length : 0,
                     pass: 0,
-                    results: {}
+                    results: {},
+                    running: true
                 })
             }
 
+            this.testResults.tests[groupKey].running = true
+
             let setResults = (res: any) => {
+                this.testResults.tests[groupKey].running = false
                 Vue.set(this.testResults.tests[groupKey].results, test.name, res)
                 this.testResults.testsAreRunning = false
 
                 if (res.pass) {
-                    this.testResults.tests[groupKey].pass = this.testResults.tests[groupKey].pass + 1
                     return resolve(res)
                 }
 
@@ -194,7 +201,7 @@ class TestService {
             })
 
             if (test.asserts && test.asserts.length) {
-                
+
                 this.runAsserts(test).then(finishAssert, finishAssert)
 
             } else if (test.fn && typeof test.fn === `function`) {
@@ -225,10 +232,19 @@ class TestService {
 
         return new Promise((resolve, reject) => {
 
-            let results: any = {
-                total: group.tests.length,
-                pass: 0,
+            Vue.set(this.testResults.tests, group.name, {
+                pass: undefined,
                 results: {}
+            })
+
+            let setResults = (res: any, index: number) => {
+                let cantUpdatePass = this.testResults.tests[group.name].pass === false
+                let newPass = cantUpdatePass ? this.testResults.tests[group.name].pass : res.pass
+
+                Vue.set(this.testResults.tests[group.name], `pass`, newPass)
+                Vue.set(this.testResults.tests[group.name].results, group.tests[index].name, res)
+
+                run(index + 1)
             }
 
             let run = (index: number) => {
@@ -237,17 +253,14 @@ class TestService {
                 if (group.tests[index]) {
                     this.runTest(group.tests[index], group.name)
                         .then((res: any) => {
-                            results.pass++
-                            results.results[group.tests[index].name] = res
-                            run(index + 1)
+                            setResults(res, index)
                         })
                         .catch((res: any) => {
-                            results.results[group.tests[index].name] = res
-                            reject(results)
+                            setResults(res, index)
                         })
 
                 } else {
-                    resolve(results)
+                    resolve(this.testResults.tests[group.name])
                 }
             }
 
@@ -270,7 +283,7 @@ class TestService {
                             run(index + 1)
                         }, (rej: any) => {
                             Vue.set(this.testResults.tests, thisTest.name, rej)
-                            resolve(this.testResults.tests)
+                            run(index + 1)
                         })
                 } else {
                     resolve(this.testResults.tests)
