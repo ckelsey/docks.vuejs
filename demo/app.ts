@@ -2,6 +2,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import Docks from '../src/documentation'
 import demoTests from './test'
+import serviceTests from './tests2'
 
 import ComponentRenderer from '../src/component-renderer'
 import DocSidebar from "../src/doc-sidebar"
@@ -26,7 +27,8 @@ export default class Demo extends Vue {
     name: string = 'App'
     DocksData = DocsData
     tests = {
-        Demo: demoTests
+        Demo: demoTests,
+        TestService: serviceTests
     }
 
     componentClasses = {

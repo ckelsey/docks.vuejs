@@ -11,6 +11,7 @@
                 <div class="h3" @click="showHideTest(groupName)" :class="{open :testService.shownTestsState === groupName, groupPass: testsPassed(groupName), groupFailed: testsPassed(groupName) === false}">{{groupName}}</div>
             </div>
             <div v-show="testService.shownTestsState === groupName" class="test-items">
+                <div v-for="method in notCoveredMethods(group)" class="untested"><b>Untested method:</b> {{method.name}}</div>
                 <test-item v-for="(test, testKey) in group.tests" :key="testKey" :testKey="testKey" :testGroup="groupName"></test-item>
             </div>
         </div>
