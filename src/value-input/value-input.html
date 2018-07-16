@@ -1,6 +1,6 @@
 <div class="value-input">
     <textarea v-if="type !== 'string' && type !== 'number'" v-model="proxyModel" @input="updateVal"></textarea>
     <input type="number" v-if="type === 'number'" v-model="proxyModel" @input="updateVal">
-    <input type="test" v-if="type === 'string'" v-model="proxyModel" @input="updateVal">
+    <input type="text" v-if="type === 'string'" v-model="proxyModel" @input="updateVal">
     <input type="checkbox" v-if="type === 'boolean'" v-model="proxyModel" @input="updateVal">
 </div>

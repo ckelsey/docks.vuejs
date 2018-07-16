@@ -1,8 +1,8 @@
 <article class="doc-element" v-if="service.states.view === `components` && service.doc.name">
-    <div class="h1 title">{{ service.doc.children.name.default }}
-        <span class="subtitle" v-if="service.doc.children._description">{{ service.doc.children._description.default }}</span>
+    <div class="h1 title">{{ service.doc.name }}
+        <span class="subtitle" v-if="service.doc.description">{{ service.doc.description }}</span>
     </div>
-    <section>
+    <section v-if="service.doc.group === `components`">
         <div class="h2" @click="service.states.demo = !service.states.demo" :class="service.states.demo ? 'active' : ''">Demo</div>
         <div v-show="service.states.demo">
             <div>
@@ -18,22 +18,22 @@
         </div>
     </section>
 
-    <section v-if="service.doc.props && Object.keys(service.doc.props).length">
+    <section v-if="service.doc.children.attributeProperties && Object.keys(service.doc.children.attributeProperties).length">
         <div class="h2" @click="service.states.props = !service.states.props" :class="service.states.props ? 'active' : ''">Attribute properties</div>
         <table-renderer :show="service.states.props" :properties="attributeProps"></table-renderer>
     </section>
 
-    <section v-if="service.doc.data && Object.keys(service.doc.data).length">
+    <section v-if="service.doc.children.properties && Object.keys(service.doc.children.properties).length">
         <div class="h2" @click="service.states.dataProps = !service.states.dataProps" :class="service.states.dataProps ? 'active' : ''">Properties</div>
         <table-renderer :show="service.states.dataProps" :properties="properties"></table-renderer>
     </section>
     
-    <section v-if="service.doc.computed && Object.keys(service.doc.computed).length">
+    <section v-if="service.doc.children.computed && Object.keys(service.doc.children.computed).length">
         <div class="h2" @click="service.states.computed = !service.states.computed" :class="service.states.computed ? 'active' : ''">Computed properties</div>
         <table-renderer :show="service.states.computed" :properties="computedProps"></table-renderer>
     </section>
     
-    <section v-if="service.doc.methods && Object.keys(service.doc.methods).length">
+    <section v-if="service.doc.children.methods && Object.keys(service.doc.children.methods).length">
         <div class="h2" @click="service.states.methods = !service.states.methods" :class="service.states.methods ? 'active' : ''">Methods</div>
         <table-renderer :show="service.states.methods" :properties="methods"></table-renderer>
     </section>

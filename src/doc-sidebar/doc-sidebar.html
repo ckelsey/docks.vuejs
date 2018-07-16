@@ -1,0 +1,14 @@
+<div class="doc-sidebar">
+    <div v-for="(type, typeName) in service.DocsData" :key="typeName">
+        <div class="sidebar-heading group" :class="{active: service.states.sidebarState === typeName}" @click="setSidebarState(typeName)">{{typeName}}</div>
+        <div :class="{shown: service.states.sidebarState === typeName}" class="link-group">
+            <div class="doc-sidebar-link" v-for="(docLink, docLinkName) in service.DocsData[typeName]" :key="docLinkName" @click="service.openDoc(typeName.toLowerCase() + '.' + docLinkName)">
+                <span v-if="!docLink.isDocumented" class="red-flag"></span>
+                <span>{{docLink.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div v-if="testService.tests">
+        <div class="sidebar-heading" @click="service.states.view = `tests`">Tests</div>
+    </div>
+</div>

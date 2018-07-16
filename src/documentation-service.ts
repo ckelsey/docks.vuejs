@@ -1,9 +1,7 @@
-// SERVICES
-
 class DocumentationService {
     doc: any = {}
     openedDoc: string = 'doc-active-dropdown'
-    DocsData = {}
+    DocsData:any = {}
 
     states = {
         props: false,
@@ -13,84 +11,26 @@ class DocumentationService {
         demo: false,
         demoOverlay: false,
         components: false,
-        services: false,
         tests: false,
         view: '',
+        sidebarState: ``,
         argToShow: ``
     }
 
     setDocs(DocsData: any) {
         this.DocsData = DocsData
+        console.log(DocsData)
     }
 
     setDoc() {
         this.doc = this.getThis(this.DocsData, this.openedDoc, {})
-        return this.modelDoc(this.doc)
+        return this.doc
     }
 
     openDoc(doc: string) {
         this.openedDoc = doc
         this.states.view = `components`
         this.setDoc()
-    }
-
-    openService(doc: string) {
-        this.openedDoc = doc
-        this.states.view = `services`
-        this.setDoc()
-    }
-
-    modelDoc(doc: any) {
-        doc.methods = {}
-        doc.data = {}
-        doc.props = {}
-        doc.computed = {}
-        doc.meta = {}
-
-        for (var p in doc.children) {
-            if (doc.children[p]) {
-
-                let prop = `meta`
-
-                switch (doc.children[p].kind) {
-                    case `Method`:
-                        prop = `methods`
-                        break
-                    case `Accessor`:
-                        prop = `computed`
-                        break
-                    case `Prop`:
-                        prop = `props`
-                        doc.children[p].value = null
-                        break
-                    case `Property`:
-                        if (p !== `name` && p !== `_description`) {
-                            prop = `data`
-                        }
-                        break
-                }
-
-                doc[prop][p] = doc.children[p]
-            }
-        }
-
-        if (!Object.keys(doc.methods).length) {
-            delete doc.methods
-        }
-
-        if (!Object.keys(doc.data).length) {
-            delete doc.data
-        }
-
-        if (!Object.keys(doc.props).length) {
-            delete doc.props
-        }
-
-        if (!Object.keys(doc.computed).length) {
-            delete doc.computed
-        }
-
-        return doc
     }
 
     getMarkup(doc: any) {
@@ -102,101 +42,7 @@ class DocumentationService {
             }
         }
 
-        return `<${doc.meta.name.default}${props.length ? `\n  ` : ``}${props.join('\n  ')}${props.length ? `\n` : ``}></${doc.meta.name.default}>`
-    }
-
-    formatReturn(obj: any): any {
-
-        if (!obj) {
-            return
-        }
-
-        if (obj.properties) {
-            return this.formatProperties(obj.properties)
-        } else if (obj.type && obj.type.toLowerCase) {
-            if (obj.type.toLowerCase() === `promise`) {
-
-                if (typeof obj.values === `string`){
-                    return `Promise => ${obj.values}`
-                }
-
-                return { Promise: this.formatReturn(obj.values) }
-            }
-
-            if (obj.type.toLowerCase() === `array`) {
-                let key = `Array(${obj.values.type})`
-                let data: any = {}
-                data[key] = this.formatReturn(obj.values)
-                return data
-            }
-
-            if (obj.type.toLowerCase() === `object`) {
-                return this.formatReturn(obj.values)
-            }
-
-            return `${obj.name} (${obj.type})`
-
-        } else if (obj.values && Array.isArray(obj.values)) {
-            let result = obj.values.map((element: any) => {
-                if (element.values) {
-                    return this.formatReturn(element)
-                }
-
-                if (element.type) {
-                    return element.type
-                }
-
-                return element
-            })
-
-            let allStrings = true
-
-            for (let i = 0; i < result.length; i++) {
-                if (typeof result[i] !== `string`) {
-                    allStrings = false
-                    break
-                }
-            }
-
-            if (allStrings) {
-                result = result.join(` | `)
-            }
-
-            return result
-        } else if (Array.isArray(obj)) {
-            obj = obj.map(element=>{
-                return this.formatReturn(element)
-            })
-        }
-
-        return obj
-    }
-
-    formatProperties(obj: any): any {
-        let result: any = {}
-
-
-        if (!obj) {
-            return ''
-        }
-
-        if (obj.properties) {
-            return this.formatProperties(obj.properties)
-        } else {
-            for (var p in obj) {
-                if (obj[p]) {
-                    if (obj[p].properties) {
-                        result[`${p} (${obj[p].type})`] = this.formatProperties(obj[p].properties)
-                    } else if (Array.isArray(obj[p].type)) {
-                        result[`${p} (Array<${obj[p].type[0].type}>)`] = this.formatProperties(obj[p].type[0].properties)
-                    } else {
-                        result[p] = obj[p].type
-                    }
-                }
-            }
-        }
-
-        return result
+        return `<${doc.name}${props.length ? `\n  ` : ``}${props.join('\n  ')}${props.length ? `\n` : ``}></${doc.name}>`
     }
 
     json(obj: any) {
@@ -215,9 +61,15 @@ class DocumentationService {
             return
         }
 
-        return this.getThis(doc, `meta.name.default`, doc.name)
+        return doc.name
     }
 
+    /**
+     * @param el The starting object
+     * @param path String to follow
+     * @param emptyVal What is returned if undefined
+     * @desc Navigates an object or array to find a value
+     */
     getThis(el: any, path: Array<any> | string, emptyVal?: any) {
         if (path && path.toString().split) {
             path = [el].concat(path.toString().split(`.`))

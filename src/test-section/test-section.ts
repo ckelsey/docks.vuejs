@@ -1,10 +1,10 @@
 import Vue from "vue"
 import Component from "vue-class-component"
 
-import service from './documentation-service'
-import testService from "./test-service";
+import service from '../documentation-service'
+import testService from "../test-service"
 
-import TestItem from './test-item'
+import TestItem from '../test-item/test-item'
 
 import template from './test-section.html'
 import './test-section.scss'
@@ -60,10 +60,6 @@ export default class TestSection extends Vue {
             let serviceKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(group.for))
 
             serviceKeys.forEach(key => {
-                
-                if (key === `constructor`){
-                    return
-                }
 
                 if (typeof group.for[key] === `function`) {
                     let hasTest = false

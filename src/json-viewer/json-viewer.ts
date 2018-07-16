@@ -1,12 +1,11 @@
 import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
-import template from './json-viewer.html'
 import JSONFormatter from 'json-formatter-js'
 import './json-viewer.scss'
 
 @Component({
-    template,
+    template: `<div></div>`,
     propsData: {
         json: {}
     }

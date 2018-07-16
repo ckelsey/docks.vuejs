@@ -3,6 +3,7 @@
     background: #224764;
     color: #f0f4f8;
     white-space: nowrap;
+    overflow: auto;
     .sidebar-heading {
         font-size: 12px;
         font-weight: bold;
@@ -10,6 +11,7 @@
         padding: 10px;
         box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.13);
         cursor: pointer;
+        text-transform: uppercase;
     }
     .sidebar-heading.group::before {
         content: "";
@@ -43,5 +45,11 @@
         box-shadow: 0px -1px 0px rgba(76, 112, 141, 0.34), 0px -2px 0px rgba(4, 34, 57, 0.25);
         cursor: pointer;
         font-size: 12px;
+        .red-flag {
+            border: 3px solid #a10005;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
 }

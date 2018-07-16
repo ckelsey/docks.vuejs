@@ -1,0 +1,35 @@
+<table v-show="show" class="documentation-table">
+    <thead>
+        <tr>
+            <th v-for="(column, key) in properties.columns" :key="key">{{column.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="(prop, key) in properties.data" :key="key">
+            <td v-for="(column, columnKey) in properties.columns" :key="columnKey" :class="column.label">
+                <div v-if="column.key === 'value'">
+                    <value-input :model="prop"></value-input>
+                </div>
+                <div v-if="column.key === 'arguments' && prop[column.key].length" v-for="argument in prop[column.key]" :key="argument.name" class="argument-container">
+                    <div class="argument-name">
+                        <b>{{argument.name}}</b>
+                        <span v-if="argument.isOptional">: (optional)</span>
+                        <span class="argument-body" v-if="argument.description"> - {{argument.description}}</span>
+                    </div>
+                    <div class="argument-body red-flag" v-if="!argument.description">missing description</div>
+                    <div class="argument-object" v-if="argument.type">
+                        <json-viewer :json="argument.type"></json-viewer>
+                    </div>
+                </div>
+                <div v-if="column.key === 'testCases'" :class="{noTest: !prop[column.key] || !prop[column.key].length}">
+                    <json-viewer v-if="prop[column.key]" :json="prop[column.key]"></json-viewer>
+                </div>
+                <div v-if="column.key !== 'value' && column.key !== 'arguments' && column.key !== 'testCases'">
+                    <json-viewer v-if="prop[column.key] && typeof prop[column.key] !== 'string'" :json="prop[column.key]"></json-viewer>
+                    <div v-if="prop[column.key] && typeof prop[column.key] === 'string'" v-html="prop[column.key]"></div>
+                    <div v-if="!prop[column.key] && column.required" class="red-flag">missing {{column.key}}</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

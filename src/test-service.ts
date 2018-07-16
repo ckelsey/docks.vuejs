@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-// SERVICES
 import DocumentationService from './documentation-service'
 
 class TestService {
@@ -12,10 +11,83 @@ class TestService {
     }
 
     tests: any = {}
+    flatTests: any = {}
+    testTypes: any = {
+        class: [],
+        components: [],
+        modules: [],
+        "object literals": [],
+        interfaces: [],
+        variable: []
+    }
     shownTestsState: string = ``
 
     setTests(tests: any) {
         this.tests = tests
+        this.testTypes.class = DocumentationService.getThis(this.tests, `class`, [])
+
+        let typesToTest = [
+            `methods`,
+            `properties`,
+            `attributeProperties`,
+            `computed`
+        ]
+
+        for (let type in DocumentationService.DocsData) {
+            if (DocumentationService.DocsData[type]) {
+
+                for (let docName in DocumentationService.DocsData[type]) {
+                    if (DocumentationService.DocsData[type][docName] && docName !== `DocumentationService` && docName !== `TestService`) {
+
+                        let serviceTest = DocumentationService.getThis(this.testTypes, `${type}.${docName}`, { tests: [] })
+                        let serviceTestTests: any = {}
+
+                        serviceTest.tests.forEach((test: any) => {
+                            let fors = test.for
+
+                            if (!fors) {
+                                fors = test.name
+                            }
+
+                            if (Array.isArray(fors)) {
+                                fors.forEach(_for => {
+                                    if (!serviceTestTests[_for]) {
+                                        serviceTestTests[_for] = [test]
+                                        return
+                                    }
+
+                                    serviceTestTests[_for].push(test)
+                                })
+                            } else {
+                                if (!serviceTestTests[fors]) {
+                                    serviceTestTests[fors] = [test]
+                                    return
+                                }
+                                serviceTestTests[fors].push(test)
+                            }
+                        })
+
+                        if (DocumentationService.DocsData[type][docName].children){
+                            
+                            for (let childName in DocumentationService.DocsData[type][docName].children) {
+                                if (DocumentationService.DocsData[type][docName].children[childName] && typesToTest.indexOf(childName) > -1) {
+
+                                    for (let propName in DocumentationService.DocsData[type][docName].children[childName]) {
+                                        if (DocumentationService.DocsData[type][docName].children[childName][propName]) {
+
+                                            DocumentationService.DocsData[type][docName].children[childName][propName].tests = serviceTestTests[propName]
+                                            DocumentationService.DocsData[type][docName].children[childName][propName].testCases = serviceTestTests[propName] ? serviceTestTests[propName].map((test: any) => {
+                                                return test.name
+                                            }) : []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     hasTestRan(doc: string, testName: string) {
@@ -72,7 +144,7 @@ class TestService {
             return undefined
         }
 
-        if (!testName){
+        if (!testName) {
             return DocumentationService.getThis(this.testResults.tests, `${doc}.running`)
         }
 
@@ -269,7 +341,11 @@ class TestService {
 
     }
 
-    runTests() {
+    /**
+     * @desc Runs all tests
+     * @param test - testing param description
+     */
+    runTests(test?: { id: string }) {
 
         return new Promise((resolve, reject) => {
 

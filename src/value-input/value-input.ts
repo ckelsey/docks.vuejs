@@ -2,7 +2,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop, Watch } from "vue-property-decorator"
 import template from './value-input.html'
-import documentationService from "./documentation-service"
+import documentationService from "../documentation-service"
 
 @Component({
     template,

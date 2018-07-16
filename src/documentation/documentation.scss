@@ -1,0 +1,256 @@
+@keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fading {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+#documentation-overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 9999999;
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    font-family: sans-serif;
+    .red-flag {
+        color: #d10005;
+    }
+    #docs-close-button {
+        position: fixed;
+        top: 7px;
+        right: 7px;
+        color: #fff;
+        background: #f3aa00;
+        padding: 7px;
+        text-transform: uppercase;
+        border-radius: 50%;
+        font-weight: bold;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        line-height: 15px;
+        cursor: pointer;
+    }
+    button.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+    button {
+        font-size: 12px;
+        border: none;
+        padding: 7px;
+        outline: none !important;
+    }
+    .test-asserts {
+        font-size: 12px;
+        .test-assert {
+            padding: 7px 7px 7px 47px;
+            background: rgba(35, 71, 100, 0.04);
+            &:nth-child(even) {
+                background: rgba(35, 71, 100, 0.09);
+            }
+        }
+    }
+    button.spin-if-running {
+        transition: opacity 0.5s;
+        margin-right: 7px;
+    }
+    button.spin-if-running.running {
+        opacity: 0.5;
+        pointer-events: none;
+        animation: fading 2s linear infinite;
+    }
+    .spin-if-running.running>span {
+        transition: transform 0.2s;
+        animation: rotating 2s linear infinite;
+    }
+    .spin-if-running>span {
+        display: inline-block;
+    }
+    button.spin-if-running>span {
+        width: 16px;
+        height: 16px;
+    }
+    button.spin-if-running>span span {
+        position: relative;
+        left: 1px;
+        top: 0px;
+        transition: left .2s;
+    }
+    button.spin-if-running.running>span span {
+        left: 1px;
+    }
+    .doc-viewer {
+        height: 100%;
+        padding: 14px;
+        overflow: auto;
+        width: 100%;
+        color: #234764;
+        li {
+            list-style: none;
+        }
+        button {
+            background: #f3aa00;
+            color: #fff;
+            cursor: pointer;
+        }
+        .doc-element p {
+            margin: 7px 0px;
+        }
+        .doc-element p.subtitle {
+            margin-bottom: 21px;
+        }
+        .doc-element p.description {
+            margin-bottom: 21px;
+        }
+        .doc-element h2 {
+            margin: 14px 0px;
+        }
+        .doc-element section {
+            margin: 0px 0px 28px;
+        }
+        .doc-element input,
+        .doc-element select,
+        .doc-element textarea {
+            background: #fff;
+            border: none;
+            height: 32px;
+            width: 100%;
+            max-width: 210px;
+            border-radius: 1px;
+            outline: none !important;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 10px;
+            color: #234664;
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.22);
+            box-sizing: border-box;
+        }
+        .doc-element textarea {
+            height: 100px;
+            resize: none;
+        }
+        a .example-code {
+            width: 100%;
+            overflow: auto;
+            padding: 7px;
+            background: #a18f74;
+            color: #ffffff;
+            font-size: 12px;
+            margin-bottom: 21px;
+        }
+        .example-code pre {
+            margin: 0px;
+        }
+        .h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 21px 0px;
+        }
+        .h2 {
+            font-size: 18px;
+            margin: 14px 0px 0px;
+            background: #234764;
+            color: #ffffff;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .h2:before {
+            content: "";
+            border: 7px solid transparent;
+            border-left-color: #fff;
+            width: 0px;
+            height: 0px;
+            display: inline-block;
+        }
+        .h2.active:before {
+            border-left-color: transparent;
+            border-top-color: #fff;
+            position: relative;
+            top: 4px;
+            left: -3px;
+        }
+        .h3 {
+            font-size: 14px;
+            margin: 17px 0px;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 14px;
+            font-weight: 100;
+            vertical-align: baseline;
+            margin-left: 7px;
+        }
+        #demo-overlay {
+            width: 90%;
+            height: 90%;
+            // color: #fff;
+            // display: flex;
+            // justify-content: center;
+            // align-items: center;
+            // overflow: auto;
+        }
+        pre.demo {
+            font-size: 12px;
+            padding: 7px;
+            background: rgba(9, 54, 84, 0.1);
+            overflow: auto;
+        }
+        #demo-overlay-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            background: #0b1116de;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999999;
+            color: #fff;
+            overflow: auto;
+        }
+        #demo-overlay-close {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            font-size: 14px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.23);
+            padding: 7px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .flex-vcenter {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

@@ -2,10 +2,10 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 
-import service from './documentation-service'
-import testService from './test-service'
+import service from '../documentation-service'
+import testService from '../test-service'
 
-import TableRenderer from "./table-renderer";
+import TableRenderer from "../table-renderer/table-renderer";
 
 import template from './component-renderer.html'
 import './component-renderer.scss'
@@ -16,7 +16,7 @@ import './component-renderer.scss'
         'table-renderer': TableRenderer
     },
     propsData: {
-        'launch':()=>{}
+        'launch': () => { }
     }
 })
 
@@ -31,51 +31,65 @@ export default class ComponentRenderer extends Vue {
 
     get properties() {
         return {
-            data: this.service.doc.data,
+            data: this.service.doc.children.properties,
             columns: [{
                 key: 'name',
                 label: 'name'
             }, {
                 key: 'type',
-                label: 'type'
+                label: 'type',
+                required: true
             }, {
                 key: 'description',
-                label: 'description'
+                label: 'description',
+                required: true
+            }, {
+                key: 'testCases',
+                label: 'test cases'
             }]
         }
     }
 
     get methods() {
         return {
-            data: this.service.doc.methods,
+            data: this.service.doc.children.methods,
             columns: [{
                 key: 'name',
                 label: 'name'
             }, {
                 key: 'description',
-                label: 'description'
+                label: 'description',
+                required: true
             }, {
-                key: 'params',
+                key: 'arguments',
                 label: 'arguments'
             }, {
                 label: 'returns',
                 key: 'returns'
+            }, {
+                key: 'testCases',
+                label: 'test cases'
             }]
         }
     }
 
     get attributeProps() {
         return {
-            data: this.service.doc.props,
+            data: this.service.doc.children.attributeProperties,
             columns: [{
                 key: 'name',
                 label: 'name'
             }, {
                 key: 'type',
-                label: 'type'
+                label: 'type',
+                required: true
             }, {
                 key: 'description',
-                label: 'description'
+                label: 'description',
+                required: true
+            }, {
+                key: 'testCases',
+                label: 'test cases'
             }, {
                 key: 'value',
                 label: 'value'
@@ -85,16 +99,20 @@ export default class ComponentRenderer extends Vue {
 
     get computedProps() {
         return {
-            data: this.service.doc.computed,
+            data: this.service.doc.children.computed,
             columns: [{
                 key: 'name',
                 label: 'name'
             }, {
                 key: 'description',
-                label: 'description'
+                label: 'description',
+                required: true
             }, {
                 key: 'returns',
                 label: 'returns'
+            }, {
+                key: 'testCases',
+                label: 'test cases'
             }]
         }
     }

@@ -54,6 +54,7 @@
         "babel-polyfill": "^6.26.0",
         "json-formatter-js": "^2.2.0",
         "vue": "^2.5.16",
-        "vue-property-decorator": "^6.0.0"
+        "vue-property-decorator": "^6.0.0",
+        "typedock": "latest"
     }
 }

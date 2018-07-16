@@ -2,17 +2,16 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 
-import DocumentationService from './documentation-service'
+import DocumentationService from '../documentation-service'
+import testService from "../test-service"
 
-import TestSection from './test-section'
-import TestItem from './test-item'
-import DocSidebar from './doc-sidebar'
-import ServiceRenderer from './service-renderer'
-import ComponentRenderer from './component-renderer'
+import TestSection from '../test-section/test-section'
+import TestItem from '../test-item/test-item'
+import DocSidebar from '../doc-sidebar/doc-sidebar'
+import ComponentRenderer from '../component-renderer/component-renderer'
 
 import template from './documentation.html'
 import './documentation.scss'
-import testService from "./test-service";
 
 @Component({
     template,
@@ -25,7 +24,6 @@ import testService from "./test-service";
         'test-item': TestItem,
         'doc-sidebar': DocSidebar,
         'test-section': TestSection,
-        'service-renderer': ServiceRenderer,
         'component-renderer': ComponentRenderer
     }
 })
@@ -46,6 +44,15 @@ export default class Documentation extends Vue {
     componentClasses: any = this.componentClasses
 
     launch(doc: any) {
+
+        if(!doc){
+            doc = this.service.doc
+        }
+
+        if(!doc){
+            return
+        }
+
         let propsData: { [key: string]: any } = {}
         let container = document.getElementById(`demo-overlay`)
 
@@ -53,27 +60,25 @@ export default class Documentation extends Vue {
             container.innerHTML = ``
 
             if (this.componentClasses){
-                let _Class = this.componentClasses[doc.meta.name.default]
+                let _Class = this.componentClasses[doc.name]
 
 				if (_Class) {
 					DocumentationService.states.demoOverlay = true
 
-					for (var p in doc.props) {
-						if (doc.props[p]) {
-							switch (doc.props[p].type) {
+                    for (var p in doc.children.attributeProperties) {
+                        if (doc.children.attributeProperties[p]) {
+                            switch (doc.children.attributeProperties[p].type) {
 								case 'Function':
-									propsData[p] = new Function(doc.props[p].value)
+                                    propsData[p] = new Function(doc.children.attributeProperties[p].value)
 									break
 
 								default:
-									propsData[p] = doc.props[p].value
+                                    propsData[p] = doc.children.attributeProperties[p].value
 									break
 							}
 						}
                     }
                     
-                    console.log(propsData)
-
 					let Class = Vue.extend(_Class)
 					let Instance = new Class({ propsData })
 

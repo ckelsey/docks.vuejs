@@ -2,9 +2,9 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 import template from './table-renderer.html'
-import documentationService from "./documentation-service"
-import ValueInput from './value-input'
-import JSONViewer from './json-viewer'
+import documentationService from "../documentation-service"
+import ValueInput from '../value-input/value-input'
+import JSONViewer from '../json-viewer/json-viewer'
 import './table-renderer.scss'
 
 @Component({

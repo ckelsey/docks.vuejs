@@ -7,7 +7,7 @@ module.exports = {
     mode: 'production',
     context: path.resolve(__dirname),
     entry: {
-        app: './src/documentation.ts'
+        app: './src/documentation/documentation.ts'
     },
     output: {
         filename: 'docks.min.js',
