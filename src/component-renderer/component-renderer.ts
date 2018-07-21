@@ -8,7 +8,6 @@ import testService from '../test-service'
 import TableRenderer from "../table-renderer/table-renderer";
 
 import template from './component-renderer.html'
-import './component-renderer.scss'
 
 @Component({
     template,
