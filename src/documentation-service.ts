@@ -24,6 +24,8 @@ class DocumentationService {
 
     setDoc() {
         this.doc = this.getThis(this.DocsData, this.openedDoc, {})
+
+        console.log(this.doc)
         return this.doc
     }
 

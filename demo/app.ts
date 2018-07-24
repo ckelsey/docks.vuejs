@@ -11,6 +11,7 @@ import TestSection from "../src/test-section/test-section"
 import ValueInput from "../src/value-input/value-input"
 
 import Tests from './tests/tests'
+import documentationService from "../src/documentation-service";
 
 @Component({
     template: `<documentation :docs="DocksData" :tests="tests" :componentClasses="componentClasses"></documentation>`,
@@ -33,5 +34,23 @@ export default class Demo extends Vue {
         'test-item': TestItem,
         'test-section': TestSection,
         'value-input': ValueInput
+    }
+
+    mounted(){
+        this.DocksData.about = {
+            "tldr;":{
+                name: "tldr;",
+                description: "Summary about the codebase",
+                body: `
+                    <ul>
+                        <li>It's super cool</li>
+                        <li>Holla, shot calla</li>
+                    </ul>
+                `
+            }
+        }
+
+        documentationService.openDoc(`about.tldr;`)
+        documentationService.states.sidebarState = `about`
     }
 }
