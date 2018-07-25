@@ -60,32 +60,33 @@ export default class TestSection extends Vue {
             let serviceKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(group.for))
 
             serviceKeys.forEach(key => {
+                if(key === `contructor`){
+                    return
+                }
 
-                if (typeof group.for[key] === `function`) {
-                    let hasTest = false
+                let hasTest = false
 
-                    group.tests.forEach((test: any) => {
-                        if (test.for){
-                            if (typeof test.for === `string` && test.for === key){
-                                hasTest = true
-                            }
-
-                            if (Array.isArray(test.for) && test.for.indexOf(key) > -1) {
-                                hasTest = true
-                            }
-                        }else{
-                            if (typeof test.name === `string` && test.name === key) {
-                                hasTest = true
-                            }
+                group.tests.forEach((test: any) => {
+                    if (test.for) {
+                        if (typeof test.for === `string` && test.for === key) {
+                            hasTest = true
                         }
-                    })
 
-                    if (!hasTest) {
-                        noCoverage.push({
-                            name: key,
-                            method: group.for[key]
-                        })
+                        if (Array.isArray(test.for) && test.for.indexOf(key) > -1) {
+                            hasTest = true
+                        }
+                    } else {
+                        if (typeof test.name === `string` && test.name === key) {
+                            hasTest = true
+                        }
                     }
+                })
+
+                if (!hasTest) {
+                    noCoverage.push({
+                        name: key,
+                        method: group.for[key]
+                    })
                 }
             })
         }
