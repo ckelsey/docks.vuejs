@@ -19,13 +19,10 @@ class DocumentationService {
 
     setDocs(DocsData: any) {
         this.DocsData = DocsData
-        console.log(DocsData)
     }
 
     setDoc() {
         this.doc = this.getThis(this.DocsData, this.openedDoc, {})
-
-        console.log(this.doc)
         return this.doc
     }
 

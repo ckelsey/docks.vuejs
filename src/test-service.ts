@@ -67,8 +67,8 @@ class TestService {
                             }
                         })
 
-                        if (DocumentationService.DocsData[type][docName].children){
-                            
+                        if (DocumentationService.DocsData[type][docName].children) {
+
                             for (let childName in DocumentationService.DocsData[type][docName].children) {
                                 if (DocumentationService.DocsData[type][docName].children[childName] && typesToTest.indexOf(childName) > -1) {
 
@@ -219,25 +219,29 @@ class TestService {
         })
     }
 
-    runTest(test: any, groupKey: string) {
+    runTest(test: any, groupKey: string, type: string) {
         let now = new Date().getTime()
 
         return new Promise((resolve, reject) => {
             this.testResults.testsAreRunning = true
 
-            if (!this.testResults.tests[groupKey]) {
-                Vue.set(this.testResults.tests, groupKey, {
+            if (!this.testResults.tests[type]) {
+                Vue.set(this.testResults.tests, type, {})
+            }
+
+            if (!this.testResults.tests[type][groupKey]) {
+                Vue.set(this.testResults.tests[type], groupKey, {
                     pass: 0,
                     results: {},
                     running: true
                 })
             }
 
-            this.testResults.tests[groupKey].running = true
+            this.testResults.tests[type][groupKey].running = true
 
             let setResults = (res: any) => {
-                this.testResults.tests[groupKey].running = false
-                Vue.set(this.testResults.tests[groupKey].results, test.name, res)
+                this.testResults.tests[type][groupKey].running = false
+                Vue.set(this.testResults.tests[type][groupKey].results, test.name, res)
                 this.testResults.testsAreRunning = false
 
                 if (res.pass) {
@@ -265,7 +269,7 @@ class TestService {
                 })
             }
 
-            Vue.set(this.testResults.tests[groupKey].results, test.name, {
+            Vue.set(this.testResults.tests[type][groupKey].results, test.name, {
                 pass: undefined,
                 message: ``,
                 time: 0,
@@ -300,7 +304,7 @@ class TestService {
 
     }
 
-    runTestGroup(group: any) {
+    runTestGroup(group: any, type: string) {
 
         return new Promise((resolve, reject) => {
 
@@ -323,7 +327,7 @@ class TestService {
                 let now = new Date().getTime()
 
                 if (group.tests[index]) {
-                    this.runTest(group.tests[index], group.name)
+                    this.runTest(group.tests[index], group.name, type)
                         .then((res: any) => {
                             setResults(res, index)
                         })
@@ -350,17 +354,28 @@ class TestService {
         return new Promise((resolve, reject) => {
 
             let run = (index: number) => {
-                let thisTest = this.tests[Object.keys(this.tests)[index]]
+                let type = Object.keys(this.tests)[index]
+                let thisTestGroup = this.tests[type]
 
-                if (thisTest) {
-                    this.runTestGroup(thisTest)
-                        .then((res: any) => {
-                            Vue.set(this.testResults.tests, thisTest.name, res)
+                if (thisTestGroup) {
+                    let runGroup = (groupIndex: number) => {
+                        let thisTest = thisTestGroup[Object.keys(thisTestGroup)[groupIndex]]
+
+                        if (thisTest) {
+                            this.runTestGroup(thisTest, type)
+                                .then((res: any) => {
+                                    Vue.set(this.testResults.tests[type], thisTest.name, res)
+                                    runGroup(groupIndex + 1)
+                                }, (rej: any) => {
+                                    Vue.set(this.testResults.tests[type], thisTest.name, rej)
+                                    runGroup(groupIndex + 1)
+                                })
+                        } else {
                             run(index + 1)
-                        }, (rej: any) => {
-                            Vue.set(this.testResults.tests, thisTest.name, rej)
-                            run(index + 1)
-                        })
+                        }
+                    }
+
+                    runGroup(0)
                 } else {
                     resolve(this.testResults.tests)
                 }

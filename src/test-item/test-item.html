@@ -1,18 +1,18 @@
 <div class="test-item-container">
-    <div class="test-item" :class="{pass: testService.hasTestPassed(testGroup, test.name), fail: testService.hasTestPassed(testGroup, test.name) === false}">
-        <button @click="testService.runTest(test, testGroup)" class="spin-if-running" :class="{running: testService.isTestRunning(testGroup, test.name), disabled: testService.testResults.testsAreRunning}">
+    <div class="test-item" :class="{pass: testService.hasTestPassed(testPath, test.name), fail: testService.hasTestPassed(testPath, test.name) === false}">
+        <button @click="testService.runTest(test, testGroup, testType)" class="spin-if-running" :class="{running: testService.isTestRunning(testPath, test.name), disabled: testService.testResults.testsAreRunning}">
             <span>
                 <span>&#9658;</span>
             </span>
         </button>
         <b>{{test.name}}</b>
-        <span class="test-item-result" v-if="testService.hasTestRan(testGroup, test.name)">{{testService.hasTestPassed(testGroup, test.name) ? ': pass' : testService.hasTestPassed(testGroup, test.name) ===
+        <span class="test-item-result" v-if="testService.hasTestRan(testPath, test.name)">{{testService.hasTestPassed(testPath, test.name) ? ': pass' : testService.hasTestPassed(testPath, test.name) ===
             false ? ': fail' : ':'}}</span>
     </div>
     <div class="test-asserts">
-        <div class="test-assert" v-for="(assert, assertKey) in testService.hasTestAsserts(testGroup, testKey)" :key="assertKey">
+        <div class="test-assert" v-for="(assert, assertKey) in testService.hasTestAsserts(testPath, testKey)" :key="assertKey">
             {{assert}}
-            <b v-if="testService.getTestAssertResult(testGroup, test.name, assertKey)" :class="testService.getTestAssertResult(testGroup, test.name, assertKey).pass ? `pass` : `fail`">: {{testService.getTestAssertResult(testGroup, test.name, assertKey).message}}</b>
+            <b v-if="testService.getTestAssertResult(testPath, test.name, assertKey)" :class="testService.getTestAssertResult(testPath, test.name, assertKey).pass ? `pass` : `fail`">: {{testService.getTestAssertResult(testPath, test.name, assertKey).message}}</b>
         </div>
     </div>
 </div>

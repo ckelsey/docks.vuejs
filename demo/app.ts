@@ -14,7 +14,7 @@ import Tests from './tests/tests'
 import documentationService from "../src/documentation-service";
 
 @Component({
-    template: `<documentation :docs="DocksData" :tests="tests" :componentClasses="componentClasses"></documentation>`,
+    template: `<documentation :docs="DocksData" :tests="tests" :componentClasses="componentClasses" :initial="'about.tldr;'"></documentation>`,
     components:{
         'documentation': Docks
     }
@@ -36,9 +36,9 @@ export default class Demo extends Vue {
         'value-input': ValueInput
     }
 
-    mounted(){
+    created(){
         this.DocksData.about = {
-            "tldr;":{
+            "tldr":{
                 name: "tldr;",
                 description: "Summary about the codebase",
                 body: `
@@ -49,8 +49,5 @@ export default class Demo extends Vue {
                 `
             }
         }
-
-        documentationService.openDoc(`about.tldr;`)
-        documentationService.states.sidebarState = `about`
     }
 }

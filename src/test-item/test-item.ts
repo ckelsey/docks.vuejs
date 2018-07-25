@@ -10,7 +10,8 @@ import testService from "../test-service"
     template,
     propsData: {
         testKey: ``,
-        testGroup: ``
+        testGroup: ``,
+        testType: ``
     }
 })
 
@@ -24,10 +25,21 @@ export default class TestItem extends Vue {
     testKey: string = this.testKey
 
     @Prop()
+    testType: string = this.testType
+
+    @Prop()
     testGroup: string = this.testGroup
 
     get test(){
-        let test = this.service.getThis(this.testService.tests, `${this.testGroup}.tests.${this.testKey}`, {})
+        let test = this.service.getThis(this.testService.tests, `${this.testType}.${this.testGroup}.tests.${this.testKey}`, {})
         return test
+    }
+
+    get testPath() {
+        return `${this.testType}.${this.testGroup}`
+    }
+
+    mounted(){
+        console.log(this.test)
     }
 }
