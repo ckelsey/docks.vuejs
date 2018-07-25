@@ -60,7 +60,7 @@ export default class TestSection extends Vue {
             let serviceKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(group.for))
 
             serviceKeys.forEach(key => {
-                if(key === `contructor`){
+                if(key === `constructor`){
                     return
                 }
 
