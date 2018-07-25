@@ -18,7 +18,8 @@ import './documentation.scss'
     propsData:{
         docs: {},
         tests: {},
-        componentClasses: {}
+        componentClasses: {},
+        initial: ``
     },
     components: {
         'test-item': TestItem,
@@ -36,6 +37,9 @@ export default class Documentation extends Vue {
 
     @Prop()
     docs: any = this.docs
+
+    @Prop()
+    initial: string = this.initial
 
     @Prop()
     tests: any = this.tests
@@ -92,5 +96,10 @@ export default class Documentation extends Vue {
     mounted(){
         this.service.setDocs(this.docs)
         testService.setTests(this.tests)
+
+        if(this.initial && this.initial !== ``){
+            this.service.openDoc(this.initial)
+            this.service.states.sidebarState = this.initial.split(`.`)[0]
+        }
     }
 }
