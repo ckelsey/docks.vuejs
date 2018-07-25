@@ -38,8 +38,4 @@ export default class TestItem extends Vue {
     get testPath() {
         return `${this.testType}.${this.testGroup}`
     }
-
-    mounted(){
-        console.log(this.test)
-    }
 }
