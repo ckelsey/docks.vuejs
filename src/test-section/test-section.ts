@@ -54,10 +54,13 @@ export default class TestSection extends Vue {
 
     notCoveredMethods(group: any) {
 
+        console.log(group)
+
         let noCoverage: Array<{ name: string, method: Function }> = []
 
         if (group.for) {            
             let serviceKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(group.for))
+            serviceKeys = serviceKeys.concat(Object.keys(group.for))
 
             serviceKeys.forEach(key => {
                 if(key === `constructor`){
