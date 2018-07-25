@@ -54,8 +54,6 @@ export default class TestSection extends Vue {
 
     notCoveredMethods(group: any) {
 
-        console.log(group)
-
         let noCoverage: Array<{ name: string, method: Function }> = []
 
         if (group.for) {            
