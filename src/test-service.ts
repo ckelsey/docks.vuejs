@@ -79,7 +79,7 @@ class TestService {
                                             DocumentationService.DocsData[type][docName].children[childName][propName].testCases = serviceTestTests[propName] ? serviceTestTests[propName].map((test: any) => {
                                                 return {
                                                     name: test.name,
-                                                    asserts: test.asserts ? test.asserts.map((assert: any) => assert.name) : test.name
+                                                    asserts: test.asserts && test.asserts.map ? test.asserts.map((assert: any) => assert.name) : test.name
                                                 }
                                             }) : []
                                         }
