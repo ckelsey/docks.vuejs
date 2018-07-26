@@ -60,36 +60,40 @@ export default class TestSection extends Vue {
             let serviceKeys = Object.getOwnPropertyNames(Object.getPrototypeOf(group.for))
             serviceKeys = serviceKeys.concat(Object.keys(group.for))
 
-            serviceKeys.forEach(key => {
-                if(key === `constructor`){
-                    return
-                }
+            if (serviceKeys){
+                serviceKeys.forEach(key => {
+                    if (key === `constructor`) {
+                        return
+                    }
 
-                let hasTest = false
+                    let hasTest = false
 
-                group.tests.forEach((test: any) => {
-                    if (test.for) {
-                        if (typeof test.for === `string` && test.for === key) {
-                            hasTest = true
-                        }
+                    if (group.tests){
+                        group.tests.forEach((test: any) => {
+                            if (test.for) {
+                                if (typeof test.for === `string` && test.for === key) {
+                                    hasTest = true
+                                }
 
-                        if (Array.isArray(test.for) && test.for.indexOf(key) > -1) {
-                            hasTest = true
-                        }
-                    } else {
-                        if (typeof test.name === `string` && test.name === key) {
-                            hasTest = true
-                        }
+                                if (Array.isArray(test.for) && test.for.indexOf(key) > -1) {
+                                    hasTest = true
+                                }
+                            } else {
+                                if (typeof test.name === `string` && test.name === key) {
+                                    hasTest = true
+                                }
+                            }
+                        })
+                    }
+
+                    if (!hasTest) {
+                        noCoverage.push({
+                            name: key,
+                            method: group.for[key]
+                        })
                     }
                 })
-
-                if (!hasTest) {
-                    noCoverage.push({
-                        name: key,
-                        method: group.for[key]
-                    })
-                }
-            })
+            }
         }
 
         return noCoverage

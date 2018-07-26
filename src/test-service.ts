@@ -42,30 +42,32 @@ class TestService {
                         let serviceTest = DocumentationService.getThis(this.testTypes, `${type}.${docName}`, { tests: [] })
                         let serviceTestTests: any = {}
 
-                        serviceTest.tests.forEach((test: any) => {
-                            let fors = test.for
+                        if (serviceTest.tests){
+                            serviceTest.tests.forEach((test: any) => {
+                                let fors = test.for
 
-                            if (!fors) {
-                                fors = test.name
-                            }
+                                if (!fors) {
+                                    fors = test.name
+                                }
 
-                            if (Array.isArray(fors)) {
-                                fors.forEach(_for => {
-                                    if (!serviceTestTests[_for]) {
-                                        serviceTestTests[_for] = [test]
+                                if (fors && Array.isArray(fors)) {
+                                    fors.forEach(_for => {
+                                        if (!serviceTestTests[_for]) {
+                                            serviceTestTests[_for] = [test]
+                                            return
+                                        }
+
+                                        serviceTestTests[_for].push(test)
+                                    })
+                                } else {
+                                    if (!serviceTestTests[fors]) {
+                                        serviceTestTests[fors] = [test]
                                         return
                                     }
-
-                                    serviceTestTests[_for].push(test)
-                                })
-                            } else {
-                                if (!serviceTestTests[fors]) {
-                                    serviceTestTests[fors] = [test]
-                                    return
+                                    serviceTestTests[fors].push(test)
                                 }
-                                serviceTestTests[fors].push(test)
-                            }
-                        })
+                            })
+                        }
 
                         if (DocumentationService.DocsData[type][docName].children) {
 
