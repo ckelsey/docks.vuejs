@@ -31,9 +31,9 @@
         <table-renderer :show="service.states.dataProps" :properties="properties"></table-renderer>
     </section>
     
-    <section v-if="service.doc.children && service.doc.children.computed && Object.keys(service.doc.children.computed).length">
-        <div class="h2" @click="service.states.computed = !service.states.computed" :class="service.states.computed ? 'active' : ''">Computed properties</div>
-        <table-renderer :show="service.states.computed" :properties="computedProps"></table-renderer>
+    <section v-if="service.doc.children && service.doc.children.getters && Object.keys(service.doc.children.getters).length">
+        <div class="h2" @click="service.states.getters = !service.states.getters" :class="service.states.getters ? 'active' : ''">getters properties</div>
+        <table-renderer :show="service.states.getters" :properties="gettersProps"></table-renderer>
     </section>
     
     <section v-if="service.doc.children && service.doc.children.methods && Object.keys(service.doc.children.methods).length">

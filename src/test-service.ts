@@ -30,7 +30,7 @@ class TestService {
             `methods`,
             `properties`,
             `attributeProperties`,
-            `computed`
+            `getters`
         ]
 
         for (let type in DocumentationService.DocsData) {

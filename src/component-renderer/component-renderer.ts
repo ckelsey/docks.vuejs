@@ -96,9 +96,9 @@ export default class ComponentRenderer extends Vue {
         }
     }
 
-    get computedProps() {
+    get gettersProps() {
         return {
-            data: this.service.doc.children.computed,
+            data: this.service.doc.children.getters,
             columns: [{
                 key: 'name',
                 label: 'name'

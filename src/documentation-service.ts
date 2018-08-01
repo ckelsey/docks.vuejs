@@ -6,7 +6,7 @@ class DocumentationService {
     states = {
         props: false,
         methods: false,
-        computed: false,
+        getters: false,
         dataProps: false,
         demo: false,
         demoOverlay: false,
